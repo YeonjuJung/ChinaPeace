@@ -1,0 +1,144 @@
+# Author:   Yeonju Jung & Karina Shyrokykh
+# Date:     31-07-2023
+# Project:  Needs or Interests: Drivers of China’s Peace Engagement through Foreign Aid
+
+install.packages("dplyr")
+library(dplyr)
+
+##### Step 0. Original file
+
+# File name: "fiveyear" and "tenyear"  
+
+
+##### Step 1. MAIN ANALYSIS (NBRM, Model 1 - 5) 
+
+install.packages("foreign")
+library(foreign)
+
+install.packages("ggplot2")
+library(ggplot2)
+
+install.packages("MASS") #NBRM
+library(MASS)
+
+install.packages("fixest")
+library("fixest")
+
+install.packages("stargazer")
+library("stargazer")
+
+
+Model1 <- fenegbin(ODAproject ~ ODAproject1y + logGDPpercapita1y + logNaturalTotal1y 
+                    + UNGAall1y + logFDIstock1y + logBattledeathper0.1mil1y + logOtherODADiff1y | Year, tenyear)
+summary (Model1)
+etable(Model1, headers = c("Model1"))
+
+
+Model2 <- fenegbin(ODAproject ~ ODAproject1y + logGDPpercapita2y + logNaturalTotal2y 
+                    + UNGAall2y + logFDIstock2y + logBattledeathper0.1mil2y + logOtherODADiff2y | Year, tenyear)
+summary (Model2)
+etable(Model2, headers = c("Model2"))
+
+
+Model3 <- fenegbin(ODAproject ~ ODAproject1y + logGDPpercapita3y + logNaturalTotal3y 
+                    + UNGAall3y + logFDIstock3y + logBattledeathper0.1mil3y + logOtherODADiff3y | Year, tenyear)
+summary (Model3)
+etable(Model3, headers = c("Model3"))
+
+
+Model4 <- fenegbin(ODAproject ~ ODAproject1y + logGDPpercapita4y + logNaturalTotal4y 
+                    + UNGAall4y + logFDIstock4y + logBattledeathper0.1mil4y + logOtherODADiff4y | Year, tenyear)
+summary (Model4)
+etable(Model4, headers = c("Model4"))
+
+
+Model5 <- fenegbin(ODAproject ~ ODAproject1y + logGDPpercapita5y + logNaturalTotal5y 
+                    + UNGAall5y + logFDIstock5y + logBattledeathper0.1mil5y + logOtherODADiff5y | Year, tenyear)
+summary (Model5)
+etable(Model5, headers = c("Model5"))
+
+
+
+##### Step 2. ROBUSTNESS CHECK (NBRM, Model 6 - 10) 
+
+# Model 6. important voting only (lag DV)
+
+FE_NBRM_10year_lag1y <- fenegbin(ODAproject ~ ODAproject1y + logGDPpercapita1y + logNaturalTotal1y + UNGAimportant1y + logFDIstock1y
+                                 + logBattledeathper0.1mil1y + logOtherODADiff1y | Year, tenyear)
+summary (FE_NBRM_10year_lag1y)
+etable(FE_NBRM_10year_lag1y, headers = c("Negative Binomial_10year_lag1y"))
+
+# Model 7. Natural resources rent (per capita) (lag DV)
+
+FE_NBRM_test7 <- fenegbin(ODAproject ~ ODAproject1y + logGDPpercapita1y + NRrent1y + UNGAall1y + logFDIstock1y
+                          + logBattledeathper0.1mil1y + logOtherODADiff1y | Year, tenyear)
+etable(FE_NBRM_test7, headers = c("Test7"))
+
+
+# Model 8-10. 5 years (lag DV)
+
+# Model 8
+FE_NBRM_5year <- fenegbin(ODAproject ~ ODAproject1y + logGDPpercapita1y + logNaturalTotal1y + UNGAall1y + logFDIstock1y
+                          + logBattledeathper0.1mil1y + logOtherODADiff1y | Year, fiveyear)
+summary (FE_NBRM_5year)
+
+etable(FE_NBRM_5year, headers = c("Negative Binomial_5year"))
+
+# Model 9
+FE_NBRM_5year_lag2y <- fenegbin(ODAproject ~ ODAproject1y + logGDPpercapita2y + logNaturalTotal2y + UNGAall2y + logFDIstock2y
+                                + logBattledeathper0.1mil2y + logOtherODADiff2y | Year, fiveyear)
+summary (FE_NBRM_5year_lag2y)
+etable(FE_NBRM_5year_lag2y, headers = c("Negative Binomial_5year_lag2y"))
+
+
+# Model 10
+FE_NBRM_5year_lag3y <- fenegbin(ODAproject ~ ODAproject1y + logGDPpercapita3y + logNaturalTotal3y + UNGAall3y + logFDIstock3y
+                                + logBattledeathper0.1mil3y + logOtherODADiff3y | Year, fiveyear)
+summary (FE_NBRM_5year_lag3y)
+etable(FE_NBRM_5year_lag3y, headers = c("Negative Binomial_5year_lag3y"))
+
+
+
+
+##### Step 3. APPENDIX 
+
+# Table C1. Summary statistics 
+
+install.packages ("pastecs")
+library (pastecs)
+
+stat.desc(tenyear$ODAproject)
+summary(tenyear$ODAproject)
+
+stat.desc(tenyear$logGDPpercapita)
+summary(tenyear$logGDPpercapita)
+
+stat.desc(tenyear$LogNaturalTotal)
+summary(tenyear$LogNaturalTotal)
+
+stat.desc(tenyear$UNGAall)
+summary(tenyear$UNGAall)
+
+stat.desc(tenyear$UNGAimportant)
+summary(tenyear$UNGAimportant)
+
+stat.desc(tenyear$LogFDIstock)
+summary(tenyear$LogFDIstock)
+
+stat.desc(tenyear$LogBattledeathper0.1mil)
+summary(tenyear$LogBattledeathper0.1mil)
+
+stat.desc(tenyear$LogOtherODADiff)
+summary(tenyear$LogOtherODADiff)
+
+
+# Table C2. Correlation matrix 
+
+install.packages("Hmisc")
+library("Hmisc")
+
+install.packages("corrplot")
+library("corrplot")
+
+cor_1 <- cor.test(tenyear$LogFDIstock, tenyear$LogOtherODADiff, method = c("pearson"))
+print(cor_1)
